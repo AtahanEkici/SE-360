@@ -1,2 +1,3 @@
 # SE-360
-Java GUI Course
+
+Java GUI Course Project Files
