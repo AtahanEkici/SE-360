@@ -13,9 +13,11 @@ public class Database_Connections
         Class.forName("org.sqlite.JDBC");
         con = DriverManager.getConnection("jdbc:sqlite:"+desktop+"/Desktop/SE360.db");
         System.out.println("Connection Successful");  
-        }catch(HeadlessException | ClassNotFoundException | SQLException e)
+        }
+        catch(HeadlessException | ClassNotFoundException | SQLException e)
         {
-        JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
+        System.out.println("Connection Failure"); 
+        JOptionPane.showMessageDialog(null,""+e.getMessage()+"","CONNECTION ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -26,8 +28,9 @@ public class Database_Connections
         {
             final String tables = "SELECT name FROM sqlite_master WHERE type='table'";
             
-            if(con == null)
+            if(con == null)  // If the connnection is closed or does not exist //
             {
+                System.out.println("Connection was down");
                 this.getConnection();
             }
             
@@ -54,8 +57,9 @@ public class Database_Connections
         {
             final String tables = "SELECT COUNT(DISTINCT name) from sqlite_master where type='table'";
             
-            if(con == null)
+            if(con == null) // If the connnection is closed or does not exist //
             {
+                System.out.println("Connection was down");
                 this.getConnection();
             }
             

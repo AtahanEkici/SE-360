@@ -8,7 +8,7 @@ public class Main
     {
         Database_Connections db = new Database_Connections();
         
-        db.getConnection();
+        //db.getConnection();
         
         System.out.println(db.getAllTableNames());
         
