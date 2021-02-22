@@ -11,5 +11,7 @@ public class Main
         db.getConnection();
         
         System.out.println(db.getAllTableNames());
+        
+        System.out.println(db.getAllTableNumber());
     }  
 }
