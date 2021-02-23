@@ -1,7 +1,5 @@
 package DataBase;
-import java.awt.HeadlessException;import java.sql.Connection;import java.sql.DriverManager;import java.sql.ResultSet;import java.sql.SQLException;import java.sql.Statement;import java.util.ArrayList;import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import java.awt.HeadlessException;import java.sql.Connection;import java.sql.DriverManager;import java.sql.ResultSet;import java.sql.SQLException;import java.sql.Statement;import java.util.ArrayList;import javax.swing.JOptionPane;
 
 public class Database_Connections 
 {
@@ -46,7 +44,7 @@ public class Database_Connections
         {
             final String tables = "SELECT name FROM sqlite_master WHERE type='table'";
             
-            if(con == null)  // If the connnection is closed or does not exist //
+            if(con == null || con.isClosed())  // If the connnection is closed or does not exist //
             {
                 System.out.println("Connection is down");
                 this.getConnection();
@@ -64,6 +62,7 @@ public class Database_Connections
         {
            JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
         }
+        this.closeConnection();
         return list;
     }
     
@@ -74,7 +73,7 @@ public class Database_Connections
         {
             final String tables = "SELECT COUNT(DISTINCT name) from sqlite_master where type='table'";
             
-            if(con == null) // If the connnection is closed or does not exist //
+            if(con == null || con.isClosed()) // If the connnection is closed or does not exist //
             {
                 System.out.println("Connection is down");
                 this.getConnection();
@@ -92,7 +91,7 @@ public class Database_Connections
         {
            JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
         }
-        
+        this.closeConnection();
         return result;
     }
 }

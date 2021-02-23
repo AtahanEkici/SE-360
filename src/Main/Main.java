@@ -8,10 +8,10 @@ public class Main
     {
         Database_Connections db = new Database_Connections();
         
-        //db.getConnection();
-        
         System.out.println(db.getAllTableNames());
         
         System.out.println(db.getAllTableNumber());
+        
+        System.out.println(db.getAllTableNames());
     }  
 }
