@@ -1,6 +1,6 @@
 package Main;
 
-import DataBase.Database_Connections;
+import DataBase.Database_Connections;import UI.UI;
 
 public class Main 
 {   
@@ -8,6 +8,12 @@ public class Main
     {
         Database_Connections db = new Database_Connections();
         
-        db.getConnection();
+        UI.getInstance();
+        
+        //db.createIndex("index_1","sqlite_master");
+        
+        //System.out.println(db.getAllTableNames());
+        
+        //System.out.println(db.getAllTableNumber()); 
     }  
 }
