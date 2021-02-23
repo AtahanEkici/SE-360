@@ -1,5 +1,5 @@
 package UI;
-import DataBase.Database_Connections;
+import DataBase.Database_Connections; // import Database Connections class //
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
@@ -55,7 +55,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
     private JTextArea jta;
     private JMenuBar mb;
     private JMenu fileMenu,aboutMenu;
-    private JMenuItem jm_read,jm_new,jm_about,jm_github; // Main Frame Menu Components //
+    private JMenuItem jm_open,jm_save,jm_about,jm_github; // Main Frame Menu Components //
     private JScrollPane jsp;
     private JComboBox tables;
     
@@ -121,13 +121,13 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         fileMenu.setForeground(Color.BLACK);
         fileMenu.addMouseListener(this);
         
-        jm_read = fileMenu.add("Open");
-        jm_read.addActionListener(this);
-        jm_read.setBackground(Color.WHITE);
+        jm_open = fileMenu.add("Open");
+        jm_open.addActionListener(this);
+        jm_open.setBackground(Color.WHITE);
         
-        jm_new = fileMenu.add("Save");
-        jm_new.addActionListener(this);
-        jm_new.setBackground(Color.WHITE);
+        jm_save = fileMenu.add("Save");
+        jm_save.addActionListener(this);
+        jm_save.setBackground(Color.WHITE);
         
         aboutMenu = new JMenu("About");
         aboutMenu.setFocusable(true);
