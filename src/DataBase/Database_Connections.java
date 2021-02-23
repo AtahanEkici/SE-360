@@ -12,11 +12,11 @@ public class Database_Connections
         {
         Class.forName("org.sqlite.JDBC");
         con = DriverManager.getConnection("jdbc:sqlite:"+desktop+"/Desktop/SE360.db");
-        System.out.println("Connection Established");  
+        //System.out.println("Connection Established");  
         }
         catch(HeadlessException | ClassNotFoundException | SQLException e)
         {
-        System.out.println("Connection Failure"); 
+        //System.out.println("Connection Failure"); 
         JOptionPane.showMessageDialog(null,""+e.getMessage()+"","CONNECTION ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -28,11 +28,11 @@ public class Database_Connections
             try 
             {
                 con.close();
-                System.out.println("Connection Closed");
+                //System.out.println("Connection Closed");
             } 
             catch (SQLException e) 
             {
-                JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR Closing Connection ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -46,7 +46,7 @@ public class Database_Connections
             
             if(con == null || con.isClosed())  // If the connnection is closed or does not exist //
             {
-                System.out.println("Connection is down");
+                //System.out.println("Connection is down");
                 this.getConnection();
             }
             
@@ -75,7 +75,7 @@ public class Database_Connections
             
             if(con == null || con.isClosed()) // If the connnection is closed or does not exist //
             {
-                System.out.println("Connection is down");
+                //System.out.println("Connection is down");
                 this.getConnection();
             }
             
