@@ -1,5 +1,7 @@
 package DataBase;
-import java.awt.HeadlessException;import java.sql.Connection;import java.sql.DriverManager;import java.sql.ResultSet;import java.sql.SQLException;import java.sql.Statement;import java.util.ArrayList;import javax.swing.JOptionPane;
+import java.awt.HeadlessException;import java.sql.Connection;import java.sql.DriverManager;import java.sql.ResultSet;import java.sql.SQLException;import java.sql.Statement;import java.util.ArrayList;import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class Database_Connections 
 {
@@ -18,6 +20,22 @@ public class Database_Connections
         {
         System.out.println("Connection Failure"); 
         JOptionPane.showMessageDialog(null,""+e.getMessage()+"","CONNECTION ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void closeConnection()
+    {
+        if(con != null)
+        {
+            try 
+            {
+                con.close();
+                System.out.println("Connection Closed");
+            } 
+            catch (SQLException e) 
+            {
+                JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
     
@@ -52,7 +70,6 @@ public class Database_Connections
     public int getAllTableNumber()
     {
         int result = 0;
-        
          try 
         {
             final String tables = "SELECT COUNT(DISTINCT name) from sqlite_master where type='table'";
