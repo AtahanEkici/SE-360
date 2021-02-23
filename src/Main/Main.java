@@ -8,12 +8,12 @@ public class Main
     {
         Database_Connections db = new Database_Connections();
         
-        //UI.getInstance();
+        UI.getInstance();
         
         //db.createIndex("index_1","sqlite_master");
         
-        System.out.println(db.getAllTableNames());
+        //System.out.println(db.getAllTableNames());
         
-        System.out.println(db.getAllTableNumber()); 
+        //System.out.println(db.getAllTableNumber()); 
     }  
 }

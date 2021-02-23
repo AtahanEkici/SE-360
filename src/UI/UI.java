@@ -1,16 +1,19 @@
 package UI;
+import DataBase.Database_Connections;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -19,10 +22,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
-public final class UI extends JFrame implements ActionListener
+public final class UI extends JFrame implements ActionListener, MouseListener
 {
-    private static UI single_instance = null; // singleton pattern so that only one Frame will be opened/rendered //
+    private static UI single_instance = null; // singleton pattern so that only one Frame will be rendered //
     private static final Color PALE_BLACK = new Color(33, 37, 41); // Frame Content Pane Color //
     
     public static UI getInstance()
@@ -34,6 +39,14 @@ public final class UI extends JFrame implements ActionListener
             return single_instance;    
     }
     
+    // ------------------- Database Connection Object ------------------- //
+    
+    Database_Connections db_ui = new Database_Connections();
+    
+    // ------------------- Database Connection Object ------------------- //
+    
+    
+    
     // ------------------- Swing Components ------------------- //
     
     private JFrame main;
@@ -43,6 +56,7 @@ public final class UI extends JFrame implements ActionListener
     private JMenu fileMenu,aboutMenu;
     private JMenuItem jm_read,jm_new,jm_about,jm_github; // Main Frame Menu Components //
     private JScrollPane jsp;
+    private JComboBox tables;
     
     // ------------------- Swing Components ------------------- //
     
@@ -51,15 +65,18 @@ public final class UI extends JFrame implements ActionListener
         try 
         {
             Construct_Main_Frame();
-        } catch(IOException e) 
+        } 
+        catch(Exception e) 
         {
-             JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
+             JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getCanonicalName()+")",JOptionPane.ERROR_MESSAGE);
         }
     }
     
-        private void Construct_Main_Frame() throws IOException     // Constructs the Main Frame //  
+        private void Construct_Main_Frame() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException     // Constructs the Main Frame //  
     {
-        main = new JFrame("SE116 Project - Main Frame");
+        //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());  
+        
+        main = new JFrame("SE360 Project - Main Frame");
         //ImageIcon image = new ImageIcon(getClass().getResource("/Icons/icon.png"));
         //main.setIconImage(image.getImage());
         main.setLayout(new BorderLayout());
@@ -92,10 +109,16 @@ public final class UI extends JFrame implements ActionListener
         btn3.addActionListener(this);
         btn3.setBackground(Color.WHITE);
         btn3.setFocusable(false);
-
+        
+        tables = new JComboBox(db_ui.getAllTableNames().toArray());
+        tables.addActionListener(this);
+        tables.setBackground(Color.WHITE);
+        tables.setFocusable(false);
+        
         fileMenu = new JMenu("File");
         fileMenu.setFocusable(true);
         fileMenu.setForeground(Color.BLACK);
+        fileMenu.addMouseListener(this);
         
         jm_read = fileMenu.add("Open");
         jm_read.addActionListener(this);
@@ -108,6 +131,7 @@ public final class UI extends JFrame implements ActionListener
         aboutMenu = new JMenu("About");
         aboutMenu.setFocusable(true);
         aboutMenu.setForeground(Color.BLACK);
+        aboutMenu.addMouseListener(this);
         
         jm_about = aboutMenu.add("About This Project");
         jm_about.addActionListener(this);
@@ -123,6 +147,7 @@ public final class UI extends JFrame implements ActionListener
         tutucu.add(btn1,BorderLayout.CENTER);
         tutucu.add(btn2,BorderLayout.CENTER);
         tutucu.add(btn3,BorderLayout.CENTER);
+        tutucu.add(tables,BorderLayout.SOUTH);
         tutucu.setBorder(null);
         
         jsp = new JScrollPane();
@@ -157,22 +182,22 @@ public final class UI extends JFrame implements ActionListener
     @Override
     public void actionPerformed(ActionEvent Event) 
     {
-       if(Event.getSource() == btn1)
+       if(Event.getSource() == btn1) // Buton1'e tıklandığında //
        {
             JOptionPane.showMessageDialog(null,"Btn1 pressed"); 
        }
        
-       else if(Event.getSource() == btn2)
+       else if(Event.getSource() == btn2) // Buton2'ye tıklandığında //
        {
            JOptionPane.showMessageDialog(null,"Btn2 pressed"); 
        }
        
-       else if(Event.getSource() == btn3)
+       else if(Event.getSource() == btn3) // Buton3'e tıklandığında //
        {
            JOptionPane.showMessageDialog(null,"Btn3 pressed"); 
        }
        
-       else if(Event.getSource() == jm_github)
+       else if(Event.getSource() == jm_github) // Github Menüsü seçildiğinde //
        {
            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) // if the github button is pressed on the main frame //
             {
@@ -186,9 +211,47 @@ public final class UI extends JFrame implements ActionListener
             }
        }
        
+       else if(Event.getSource() == tables) // Combobox üzerinde seçim yapıldığında //
+       {
+           JOptionPane.showMessageDialog(null,""+tables.getSelectedItem()+" selected"); 
+       }
+       
        else
        {
-           JOptionPane.showMessageDialog(null,"Unhandled Action "+Event.getSource().getClass().getSimpleName()+""); 
+           JOptionPane.showMessageDialog(null,"Unhandled Action Error "+Event.getSource().getClass().getSimpleName()+""); 
        }
+    }
+
+// ---------------------------- Other Action Elements ---------------------------- //
+// Not Needed //
+@Override public void mousePressed(MouseEvent me){}
+@Override public void mouseReleased(MouseEvent me){}
+@Override public void mouseClicked(MouseEvent me){}
+// Not Needed //
+
+    @Override
+    public void mouseEntered(MouseEvent me) 
+    {
+       if(me.getSource() == fileMenu)
+        {
+            fileMenu.setSelected(true); // begin hover effect //
+        }
+        else if(me.getSource() == aboutMenu)
+        {
+            aboutMenu.setSelected(true); // begin hover effect //
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) 
+    {
+       if(me.getSource() == fileMenu)
+        {
+            fileMenu.setSelected(false); // dispose hover effect //
+        }
+        else if(me.getSource() == aboutMenu)
+        {
+            aboutMenu.setSelected(false); // dispose hover effect //
+        }
     }
 }
