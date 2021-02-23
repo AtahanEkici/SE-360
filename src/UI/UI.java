@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -77,8 +78,8 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());  
         
         main = new JFrame("SE360 Project - Main Frame");
-        //ImageIcon image = new ImageIcon(getClass().getResource("/Icons/icon.png"));
-        //main.setIconImage(image.getImage());
+        ImageIcon image = new ImageIcon(getClass().getResource("/Icons/demo.png"));
+        main.setIconImage(image.getImage());
         main.setLayout(new BorderLayout());
         main.setResizable(false);
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
