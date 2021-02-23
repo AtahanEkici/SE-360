@@ -12,7 +12,7 @@ public class Database_Connections
         {
         Class.forName("org.sqlite.JDBC");
         con = DriverManager.getConnection("jdbc:sqlite:"+desktop+"/Desktop/SE360.db");
-        System.out.println("Connection Successful");  
+        System.out.println("Connection Established");  
         }
         catch(HeadlessException | ClassNotFoundException | SQLException e)
         {
@@ -30,7 +30,7 @@ public class Database_Connections
             
             if(con == null)  // If the connnection is closed or does not exist //
             {
-                System.out.println("Connection was down");
+                System.out.println("Connection is down");
                 this.getConnection();
             }
             
@@ -59,7 +59,7 @@ public class Database_Connections
             
             if(con == null) // If the connnection is closed or does not exist //
             {
-                System.out.println("Connection was down");
+                System.out.println("Connection is down");
                 this.getConnection();
             }
             
