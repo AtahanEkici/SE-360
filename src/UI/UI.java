@@ -68,9 +68,9 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         {
             Construct_Main_Frame();
         } 
-        catch(Exception e) 
+        catch(IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) 
         {
-             JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getCanonicalName()+")",JOptionPane.ERROR_MESSAGE);
+             JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -213,7 +213,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
                 } 
                 catch (IOException | URISyntaxException e) 
                 {
-                JOptionPane.showMessageDialog( null, ""+e.getMessage()+"", ""+e.getClass()+"", JOptionPane. ERROR_MESSAGE);
+                JOptionPane.showMessageDialog( null, ""+e.getMessage()+"", ""+e.getClass().getSimpleName()+"", JOptionPane. ERROR_MESSAGE);
                 }
             }
        }
@@ -234,32 +234,32 @@ public final class UI extends JFrame implements ActionListener, MouseListener
 
 // ---------------------------- Other Action Elements ---------------------------- //
 // Not Needed //
-@Override public void mousePressed(MouseEvent me){}
-@Override public void mouseReleased(MouseEvent me){}
-@Override public void mouseClicked(MouseEvent me){}
+@Override public void mousePressed(MouseEvent Event){}
+@Override public void mouseReleased(MouseEvent Event){}
+@Override public void mouseClicked(MouseEvent Event){}
 // Not Needed //
 
     @Override
-    public void mouseEntered(MouseEvent me) 
+    public void mouseEntered(MouseEvent Event) 
     {
-       if(me.getSource() == fileMenu)
+       if(Event.getSource() == fileMenu)
         {
             fileMenu.setSelected(true); // begin hover effect //
         }
-        else if(me.getSource() == aboutMenu)
+        else if(Event.getSource() == aboutMenu)
         {
             aboutMenu.setSelected(true); // begin hover effect //
         }
     }
 
     @Override
-    public void mouseExited(MouseEvent me) 
+    public void mouseExited(MouseEvent Event) 
     {
-       if(me.getSource() == fileMenu)
+       if(Event.getSource() == fileMenu)
         {
             fileMenu.setSelected(false); // dispose hover effect //
         }
-        else if(me.getSource() == aboutMenu)
+        else if(Event.getSource() == aboutMenu)
         {
             aboutMenu.setSelected(false); // dispose hover effect //
         }
