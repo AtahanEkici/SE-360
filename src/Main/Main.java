@@ -10,7 +10,7 @@ public class Main
         
         UI.getInstance();
         
-        //db.createIndex("index_1","sqlite_master");
+        //db.createIndex("index_1","sqlite_master"); // There is a mistake in indexing needs fixing //
         
         //System.out.println(db.getAllTableNames());
         

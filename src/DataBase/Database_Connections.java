@@ -13,7 +13,7 @@ public class Database_Connections
 {
     private static Connection con;
     
-    public void getConnection() 
+    public static final void getConnection() // only one connection at a time //
     {
         final String desktop = System.getProperty("user.home");
         try
@@ -25,7 +25,7 @@ public class Database_Connections
         catch(HeadlessException | ClassNotFoundException | SQLException e)
         {
         //System.out.println("Connection Failure"); 
-        JOptionPane.showMessageDialog(null,""+e.getMessage()+"","CONNECTION ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null,""+e.getMessage()+"","CONNECTION ERROR ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -40,7 +40,7 @@ public class Database_Connections
             } 
             catch (SQLException e) 
             {
-                JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR Closing Connection ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR Closing Connection ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -50,7 +50,7 @@ public class Database_Connections
         ArrayList<String> list = new ArrayList<>();
         try 
         {
-            final String tables = "SELECT name FROM sqlite_master WHERE type='table';";
+            final String tables = "SELECT DISTINCT name FROM sqlite_master WHERE type='table';";
             
             if(con == null || con.isClosed())  // If the connnection is closed or does not exist //
             {
@@ -68,7 +68,7 @@ public class Database_Connections
         } 
         catch (SQLException e) 
         {
-           JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);
         }
         this.closeConnection();
         return list;
@@ -97,7 +97,7 @@ public class Database_Connections
         } 
         catch (SQLException e) 
         {
-           JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);
         }
         this.closeConnection();
         return result;
@@ -126,7 +126,7 @@ public class Database_Connections
         } 
         catch (SQLException e) 
         {
-           JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass()+")",JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);
         }
         this.closeConnection();
         return indexes;

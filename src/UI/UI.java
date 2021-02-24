@@ -116,6 +116,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         tables.addActionListener(this);
         tables.setBackground(Color.WHITE);
         tables.setFocusable(false);
+        tables.setSelectedIndex(-1);
         
         fileMenu = new JMenu("File");
         fileMenu.setFocusable(true);
@@ -219,8 +220,11 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        
        else if(Event.getSource() == tables) // Combobox üzerinde seçim yapıldığında //
        {
-           JOptionPane.showMessageDialog(null,"<html><center>"+tables.getSelectedItem()+" selected </center> </html>");
-       }
+           if(tables.getSelectedItem() != null)
+           {
+               JOptionPane.showMessageDialog(null,"<html><center>"+tables.getSelectedItem()+" selected </center> </html>");
+           } 
+      }
        
        else
        {
