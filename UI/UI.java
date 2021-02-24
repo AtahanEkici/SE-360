@@ -1,5 +1,5 @@
 package UI;
-import DataBase.Database_Connections;
+import DataBase.Database_Connections; // import Database Connections class //
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -55,7 +56,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
     private JTextArea jta;
     private JMenuBar mb;
     private JMenu fileMenu,aboutMenu;
-    private JMenuItem jm_read,jm_new,jm_about,jm_github; // Main Frame Menu Components //
+    private JMenuItem jm_open,jm_save,jm_about,jm_github; // Main Frame Menu Components //
     private JScrollPane jsp;
     private JComboBox tables;
     
@@ -67,9 +68,9 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         {
             Construct_Main_Frame();
         } 
-        catch(Exception e) 
+        catch(IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) 
         {
-             JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getCanonicalName()+")",JOptionPane.ERROR_MESSAGE);
+             JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -115,19 +116,20 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         tables.addActionListener(this);
         tables.setBackground(Color.WHITE);
         tables.setFocusable(false);
+        tables.setSelectedIndex(-1);
         
         fileMenu = new JMenu("File");
         fileMenu.setFocusable(true);
         fileMenu.setForeground(Color.BLACK);
         fileMenu.addMouseListener(this);
         
-        jm_read = fileMenu.add("Open");
-        jm_read.addActionListener(this);
-        jm_read.setBackground(Color.WHITE);
+        jm_open = fileMenu.add("Open");
+        jm_open.addActionListener(this);
+        jm_open.setBackground(Color.WHITE);
         
-        jm_new = fileMenu.add("Save");
-        jm_new.addActionListener(this);
-        jm_new.setBackground(Color.WHITE);
+        jm_save = fileMenu.add("Save");
+        jm_save.addActionListener(this);
+        jm_save.setBackground(Color.WHITE);
         
         aboutMenu = new JMenu("About");
         aboutMenu.setFocusable(true);
@@ -186,16 +188,19 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        if(Event.getSource() == btn1) // Buton1'e tıklandığında //
        {
             JOptionPane.showMessageDialog(null,"Btn1 pressed"); 
+            jta.append("Btn1 pressed\n");
        }
        
        else if(Event.getSource() == btn2) // Buton2'ye tıklandığında //
        {
-           JOptionPane.showMessageDialog(null,"Btn2 pressed"); 
+           JOptionPane.showMessageDialog(null,"Btn2 pressed");
+           jta.append("Btn2 pressed\n");
        }
        
        else if(Event.getSource() == btn3) // Buton3'e tıklandığında //
        {
-           JOptionPane.showMessageDialog(null,"Btn3 pressed"); 
+           JOptionPane.showMessageDialog(null,"Btn3 pressed");
+           jta.append("Btn3 pressed\n");
        }
        
        else if(Event.getSource() == jm_github) // Github Menüsü seçildiğinde //
@@ -204,53 +209,57 @@ public final class UI extends JFrame implements ActionListener, MouseListener
             {
                 try 
                 {
-                    Desktop.getDesktop().browse(new URI("https://github.com/AtahanEkici/SE-360/tree/Project"));
-                } catch (IOException | URISyntaxException e) 
+                  Desktop.getDesktop().browse(new URI("https://github.com/AtahanEkici/SE-360/tree/Project"));
+                } 
+                catch (IOException | URISyntaxException e) 
                 {
-                JOptionPane.showMessageDialog( null, ""+e.getMessage()+"", ""+e.getClass()+"", JOptionPane. ERROR_MESSAGE);
+                JOptionPane.showMessageDialog( null, ""+e.getMessage()+"", ""+e.getClass().getSimpleName()+"", JOptionPane. ERROR_MESSAGE);
                 }
             }
        }
        
        else if(Event.getSource() == tables) // Combobox üzerinde seçim yapıldığında //
        {
-           JOptionPane.showMessageDialog(null,""+tables.getSelectedItem()+" selected"); 
-       }
+           if(tables.getSelectedItem() != null)
+           {
+               JOptionPane.showMessageDialog(null,"<html><center>"+tables.getSelectedItem()+" selected </center> </html>");
+           } 
+      }
        
        else
        {
-           JOptionPane.showMessageDialog(null,"Unhandled Action Error "+Event.getSource().getClass().getSimpleName()+""); 
+          JOptionPane.showMessageDialog( null, "Unhandled Action ", ""+Event.getSource().getClass().getSimpleName()+" Error", JOptionPane. ERROR_MESSAGE);
        }
     }
 
 // ---------------------------- Other Action Elements ---------------------------- //
 // Not Needed //
-@Override public void mousePressed(MouseEvent me){}
-@Override public void mouseReleased(MouseEvent me){}
-@Override public void mouseClicked(MouseEvent me){}
+@Override public void mousePressed(MouseEvent Event){}
+@Override public void mouseReleased(MouseEvent Event){}
+@Override public void mouseClicked(MouseEvent Event){}
 // Not Needed //
 
     @Override
-    public void mouseEntered(MouseEvent me) 
+    public void mouseEntered(MouseEvent Event) 
     {
-       if(me.getSource() == fileMenu)
+       if(Event.getSource() == fileMenu)
         {
             fileMenu.setSelected(true); // begin hover effect //
         }
-        else if(me.getSource() == aboutMenu)
+        else if(Event.getSource() == aboutMenu)
         {
             aboutMenu.setSelected(true); // begin hover effect //
         }
     }
 
     @Override
-    public void mouseExited(MouseEvent me) 
+    public void mouseExited(MouseEvent Event) 
     {
-       if(me.getSource() == fileMenu)
+       if(Event.getSource() == fileMenu)
         {
             fileMenu.setSelected(false); // dispose hover effect //
         }
-        else if(me.getSource() == aboutMenu)
+        else if(Event.getSource() == aboutMenu)
         {
             aboutMenu.setSelected(false); // dispose hover effect //
         }
