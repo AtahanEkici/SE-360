@@ -219,12 +219,12 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        
        else if(Event.getSource() == tables) // Combobox üzerinde seçim yapıldığında //
        {
-           JOptionPane.showMessageDialog(null,"<html><center>"+tables.getSelectedItem()+" selected ");
+           JOptionPane.showMessageDialog(null,"<html><center>"+tables.getSelectedItem()+" selected </center> </html>");
        }
        
        else
        {
-          JOptionPane.showMessageDialog( null, "Unhandled Action ", ""+Event.getSource().getClass().getCanonicalName()+"", JOptionPane. ERROR_MESSAGE);
+          JOptionPane.showMessageDialog( null, "Unhandled Action ", ""+Event.getSource().getClass().getSimpleName()+" Error", JOptionPane. ERROR_MESSAGE);
        }
     }
 
