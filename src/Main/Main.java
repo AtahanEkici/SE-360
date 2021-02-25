@@ -8,7 +8,7 @@ public class Main
     {   
         UI.getInstance();
         
-        Database_Connections.createIndex("index_1","sqlite_master"); // There is a mistake in indexing that needs fixing //
+        //Database_Connections.createIndex("index_1","sqlite_master"); // There is a mistake in indexing that needs fixing //
         
         //System.out.println(db.getAllTableNumber()); 
     }  

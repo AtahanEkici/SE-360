@@ -66,7 +66,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         }
     }
     
-        private void Construct_Main_Frame() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException     // Constructs the Main Frame //  
+    private void Construct_Main_Frame() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException     // Constructs the Main Frame //  
     {
         //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());  
         
@@ -173,6 +173,14 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         main.requestFocus();
     }
 
+    private void Update()
+    {
+        // Refresh Main Frame //
+        main.setVisible(false);
+        main.revalidate();
+        main.setVisible(true);
+        // Refresh Main Frame //
+    }
 
     @Override
     public void actionPerformed(ActionEvent Event) 
