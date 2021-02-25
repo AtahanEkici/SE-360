@@ -29,7 +29,7 @@ public class Database_Connections
         }
     }
     
-    public void closeConnection()
+    public static final void closeConnection()
     {
         if(con != null)
         {
@@ -45,7 +45,7 @@ public class Database_Connections
         }
     }
     
-    public ArrayList<String> getAllTableNames()
+    public static ArrayList<String> getAllTableNames()
     {
         ArrayList<String> list = new ArrayList<>();
         try 
@@ -55,7 +55,7 @@ public class Database_Connections
             if(con == null || con.isClosed())  // If the connnection is closed or does not exist //
             {
                 //System.out.println("Connection is down");
-                this.getConnection();
+                Database_Connections.getConnection();
             }
             
             final Statement st = con.createStatement();
@@ -70,7 +70,7 @@ public class Database_Connections
         {
            JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);
         }
-        this.closeConnection();
+        Database_Connections.closeConnection(); // close the connection after the operation is finished //
         return list;
     }
     
@@ -84,7 +84,7 @@ public class Database_Connections
             if(con == null || con.isClosed()) // If the connnection is closed or does not exist //
             {
                 //System.out.println("Connection is down");
-                this.getConnection();
+                Database_Connections.getConnection();
             }
             
             final Statement st = con.createStatement();
@@ -99,7 +99,7 @@ public class Database_Connections
         {
            JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);
         }
-        this.closeConnection();
+        Database_Connections.closeConnection(); // close the connection after the operation is finished //
         return result;
     }
     
@@ -113,7 +113,7 @@ public class Database_Connections
             if(con == null || con.isClosed())  // If the connnection is closed or does not exist //
             {
                 //System.out.println("Connection is down");
-                this.getConnection();
+                Database_Connections.getConnection();
             }
             
             final Statement st = con.createStatement();
@@ -128,49 +128,49 @@ public class Database_Connections
         {
            JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);
         }
-        this.closeConnection();
+        Database_Connections.closeConnection(); // close the connection after the operation is finished //
         return indexes;
     }
     
-    public void createIndex(String Index_name, String table_name,String column_name)
+    public static final void createIndex(String Index_name, String table_name,String column_name)
     { 
        final String Indexing = "CREATE INDEX IF NOT EXISTS "+Index_name+" ON "+table_name+"("+column_name+")".trim();
         
         try 
-        {
-            
+        {  
         if(con == null || con.isClosed())  // If the connnection is closed or does not exist //
         {
             //System.out.println("Connection is down");
-            this.getConnection();
+            Database_Connections.getConnection();
         }    
        
         System.out.println(Indexing);
         Statement index_statement = con.createStatement();       
         index_statement.executeQuery(Indexing); // execute the manipulated string //
-   
-        } catch (SQLException e) 
+        Database_Connections.closeConnection(); // close the connection after the operation is finished //
+        }
+        catch (SQLException e) 
         {
            JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);         
     }   
     }
     
-    public void createIndex(String Index_name, String table_name)
+    public static final void createIndex(String Index_name, String table_name)
     { 
        final String Indexing = "CREATE INDEX IF NOT EXISTS "+Index_name+" ON "+table_name+"".trim();
         
         try 
-        {
-            
+        {    
         if(con == null || con.isClosed())  // If the connnection is closed or does not exist //
         {
             //System.out.println("Connection is down");
-            this.getConnection();
+            Database_Connections.getConnection();
         }    
        
         System.out.println(Indexing);
         Statement index_statement = con.createStatement();       
         index_statement.executeQuery(Indexing); // execute the manipulated string //
+        Database_Connections.closeConnection();// close the connection after the operation is finished //
    
         } catch (SQLException e) 
         {

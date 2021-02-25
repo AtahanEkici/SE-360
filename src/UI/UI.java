@@ -40,15 +40,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         }
             return single_instance;    
     }
-    
-    // ------------------- Database Connection Object ------------------- //
-    
-    Database_Connections db_ui = new Database_Connections();
-    
-    // ------------------- Database Connection Object ------------------- //
-    
-    
-    
+
     // ------------------- Swing Components ------------------- //
     
     private JFrame main;
@@ -112,7 +104,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         btn3.setBackground(Color.WHITE);
         btn3.setFocusable(false);
         
-        tables = new JComboBox(db_ui.getAllTableNames().toArray());
+        tables = new JComboBox(Database_Connections.getAllTableNames().toArray());
         tables.addActionListener(this);
         tables.setBackground(Color.WHITE);
         tables.setFocusable(false);
