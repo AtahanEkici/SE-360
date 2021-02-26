@@ -188,7 +188,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        if(Event.getSource() == btn1) // Buton1'e tıklandığında //
        {
            jta.append("Btn1 pressed\n");
-            JOptionPane.showMessageDialog(null,"Btn1 pressed");  
+            //JOptionPane.showMessageDialog(null,"Btn1 pressed");  
             //Update();
        }
        
@@ -203,7 +203,8 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        {
            jta.append("Btn3 pressed\n");
            JOptionPane.showMessageDialog(null,"Btn3 pressed");
-           //Update();
+           Update();
+           jta.append("Frame refreshed");
        }
        
        else if(Event.getSource() == jm_github) // Github Menüsü seçildiğinde //
