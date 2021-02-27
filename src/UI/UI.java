@@ -204,7 +204,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
            jta.append("Btn3 pressed\n");
            JOptionPane.showMessageDialog(null,"Btn3 pressed");
            Update();
-           jta.append("Frame refreshed");
+           jta.append("Frame refreshed\n");
        }
        
        else if(Event.getSource() == jm_github) // Github Menüsü seçildiğinde //
