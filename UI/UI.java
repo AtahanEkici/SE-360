@@ -40,15 +40,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         }
             return single_instance;    
     }
-    
-    // ------------------- Database Connection Object ------------------- //
-    
-    Database_Connections db_ui = new Database_Connections();
-    
-    // ------------------- Database Connection Object ------------------- //
-    
-    
-    
+
     // ------------------- Swing Components ------------------- //
     
     private JFrame main;
@@ -74,7 +66,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         }
     }
     
-        private void Construct_Main_Frame() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException     // Constructs the Main Frame //  
+    private void Construct_Main_Frame() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException     // Constructs the Main Frame //  
     {
         //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());  
         
@@ -112,7 +104,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         btn3.setBackground(Color.WHITE);
         btn3.setFocusable(false);
         
-        tables = new JComboBox(db_ui.getAllTableNames().toArray());
+        tables = new JComboBox(Database_Connections.getAllTableNames().toArray());
         tables.addActionListener(this);
         tables.setBackground(Color.WHITE);
         tables.setFocusable(false);
@@ -181,26 +173,38 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         main.requestFocus();
     }
 
+    private void Update()
+    {
+        // Refresh Main Frame //
+        main.setVisible(false);
+        main.revalidate();
+        main.setVisible(true);
+        // Refresh Main Frame //
+    }
 
     @Override
     public void actionPerformed(ActionEvent Event) 
     {
        if(Event.getSource() == btn1) // Buton1'e tıklandığında //
        {
-            JOptionPane.showMessageDialog(null,"Btn1 pressed"); 
-            jta.append("Btn1 pressed\n");
+           jta.append("Btn1 pressed\n");
+            //JOptionPane.showMessageDialog(null,"Btn1 pressed");  
+            //Update();
        }
        
        else if(Event.getSource() == btn2) // Buton2'ye tıklandığında //
        {
-           JOptionPane.showMessageDialog(null,"Btn2 pressed");
            jta.append("Btn2 pressed\n");
+           JOptionPane.showMessageDialog(null,"Btn2 pressed");
+           //Update();
        }
        
        else if(Event.getSource() == btn3) // Buton3'e tıklandığında //
        {
-           JOptionPane.showMessageDialog(null,"Btn3 pressed");
            jta.append("Btn3 pressed\n");
+           JOptionPane.showMessageDialog(null,"Btn3 pressed");
+           Update();
+           jta.append("Frame refreshed\n");
        }
        
        else if(Event.getSource() == jm_github) // Github Menüsü seçildiğinde //
@@ -213,7 +217,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
                 } 
                 catch (IOException | URISyntaxException e) 
                 {
-                JOptionPane.showMessageDialog( null, ""+e.getMessage()+"", ""+e.getClass().getSimpleName()+"", JOptionPane. ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,""+e.getMessage()+"",""+e.getClass().getSimpleName()+"",JOptionPane. ERROR_MESSAGE);
                 }
             }
        }
