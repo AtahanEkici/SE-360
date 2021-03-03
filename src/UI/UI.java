@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.FlowLayout;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -222,6 +223,20 @@ public final class UI extends JFrame implements ActionListener, MouseListener
             }
        }
        
+       else if(Event.getSource() == jm_about) // About menü butonuna basılınca //
+       {
+            try
+            {   
+                JOptionPane.showMessageDialog(null,"<html><font color=#0066ff> <u> Java Swing Application</u></font></html>\n\n"
+                        + "<html><font color=#0066ff><u> Java</u>: </font>  1.8.0_125 </html> \n"
+                        + "<html><font color=#0066ff> <u> IDE</u>: </font>  Apache Netbeans IDE 12.0 </html>\n"
+                        + "<html><font color=#0066ff><u> Icons</u>: </font>  www.flaticon.com </html>\n","About This Project",JOptionPane.INFORMATION_MESSAGE);     
+            }catch(HeadlessException e)
+            {
+                JOptionPane.showMessageDialog( null, ""+e+"", "ERROR!", JOptionPane. ERROR_MESSAGE);
+            }
+       }
+       
        else if(Event.getSource() == tables) // Combobox üzerinde seçim yapıldığında //
        {
            if(tables.getSelectedItem() != null)
@@ -232,7 +247,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        
        else
        {
-          JOptionPane.showMessageDialog( null, "Unhandled Action ", ""+Event.getSource().getClass().getSimpleName()+" Error", JOptionPane. ERROR_MESSAGE);
+          JOptionPane.showMessageDialog( null, "Unhandled Action", ""+Event.getSource().getClass().getSimpleName()+" Error", JOptionPane. ERROR_MESSAGE);
        }
     }
 
