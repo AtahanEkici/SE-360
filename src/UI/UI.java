@@ -1,4 +1,5 @@
 package UI;
+
 import DataBase.Database_Connections; // import Database Connections class //
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -12,7 +13,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Locale;
+import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,7 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
+import javax.swing.Timer;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public final class UI extends JFrame implements ActionListener, MouseListener
@@ -45,7 +46,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
     // ------------------- Swing Components ------------------- //
     
     private JFrame main;
-    private JButton btn1,btn2,btn3;
+    private JButton btn1,btn2,btn3,btn4;
     private JTextArea jta;
     private JMenuBar mb;
     private JMenu fileMenu,aboutMenu;
@@ -60,6 +61,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         try 
         {
             Construct_Main_Frame();
+            RNG();
         } 
         catch(IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) 
         {
@@ -105,6 +107,11 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         btn3.setBackground(Color.WHITE);
         btn3.setFocusable(false);
         
+        btn4 = new JButton("Btn4");
+        btn4.addActionListener(this);
+        btn4.setBackground(Color.WHITE);
+        btn4.setFocusable(false);
+        
         tables = new JComboBox(Database_Connections.getAllTableNames().toArray());
         tables.addActionListener(this);
         tables.setBackground(Color.WHITE);
@@ -143,6 +150,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         tutucu.add(btn1,BorderLayout.CENTER);
         tutucu.add(btn2,BorderLayout.CENTER);
         tutucu.add(btn3,BorderLayout.CENTER);
+        tutucu.add(btn4,BorderLayout.CENTER);
         tutucu.add(tables,BorderLayout.SOUTH);
         tutucu.setBorder(null);
         
@@ -182,6 +190,14 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         main.setVisible(true);
         // Refresh Main Frame //
     }
+    
+    private int RNG()
+    {
+        Random rng = new Random();
+        int rand = rng.nextInt(100);
+        btn4.setText(Integer.toString(rand));
+        return rand;
+    }
 
     @Override
     public void actionPerformed(ActionEvent Event) 
@@ -206,6 +222,11 @@ public final class UI extends JFrame implements ActionListener, MouseListener
            JOptionPane.showMessageDialog(null,"Btn3 pressed");
            Update();
            jta.append("Frame refreshed\n");
+       }
+       
+       else if(Event.getSource() == btn4)
+       {
+           jta.append(btn4.getText()+ "\n");
        }
        
        else if(Event.getSource() == jm_github) // Github Menüsü seçildiğinde //
@@ -247,6 +268,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        
        else
        {
+           jta.append("Unhandled Action\n");
           JOptionPane.showMessageDialog( null, "Unhandled Action", ""+Event.getSource().getClass().getSimpleName()+" Error", JOptionPane. ERROR_MESSAGE);
        }
     }
