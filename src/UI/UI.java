@@ -187,12 +187,13 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         main.requestFocus();
     }
 
-    private void Update()
+    private void UpdateFrame()
     {
         // Refresh Main Frame //
         main.setVisible(false);
         main.revalidate();
         main.setVisible(true);
+        jta.append("Frame refreshed\n");
         // Refresh Main Frame //
     }
     
@@ -216,7 +217,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
                     if(timer_int == 0)
                     {
                        timer1.stop();
-                       btn4.setText("End");
+                       btn4.setText("Btn4");
                        btn4.setEnabled(true);
                        timer1 = null;
                        Timer_Is_Active = false;
@@ -252,10 +253,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        
        else if(Event.getSource() == btn3) // Buton3'e tıklandığında //
        {
-           jta.append("Btn3 pressed\n");
-           JOptionPane.showMessageDialog(null,"Btn3 pressed");
-           Update();
-           jta.append("Frame refreshed\n");
+           UpdateFrame();
        }
        
        else if(Event.getSource() == btn4)
