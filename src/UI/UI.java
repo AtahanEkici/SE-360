@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Random;
+import java.util.TimerTask;
+import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,6 +35,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
 {
     private static UI single_instance = null; // singleton pattern so that only one Frame will be rendered //
     private static final Color PALE_BLACK = new Color(33, 37, 41); // Frame Content Pane Color //
+    private static boolean Timer_Is_Active = false;
     
     public static UI getInstance()
     {
@@ -45,23 +48,25 @@ public final class UI extends JFrame implements ActionListener, MouseListener
 
     // ------------------- Swing Components ------------------- //
     
-    private JFrame main;
-    private JButton btn1,btn2,btn3,btn4;
-    private JTextArea jta;
-    private JMenuBar mb;
-    private JMenu fileMenu,aboutMenu;
-    private JMenuItem jm_open,jm_save,jm_about,jm_github; // Main Frame Menu Components //
-    private JScrollPane jsp;
-    private JComboBox tables;
+    private static JFrame main;
+    private static JButton btn1,btn2,btn3,btn4;
+    private static JTextArea jta;
+    private static JMenuBar mb;
+    private static JMenu fileMenu,aboutMenu;
+    private static JMenuItem jm_open,jm_save,jm_about,jm_github; // Main Frame Menu Components //
+    private static JScrollPane jsp;
+    private static JComboBox tables;
     
     // ------------------- Swing Components ------------------- //
+    
+    private static Timer timer1;
+    private static int timer_int;
     
     private UI()
     {
         try 
         {
             Construct_Main_Frame();
-            RNG();
         } 
         catch(IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) 
         {
@@ -191,13 +196,42 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         // Refresh Main Frame //
     }
     
-    private int RNG()
+    private int RNG(int min, int max)
     {
-        Random rng = new Random();
-        int rand = rng.nextInt(100);
-        btn4.setText(Integer.toString(rand));
-        return rand;
+        return ThreadLocalRandom.current().nextInt(min,(max + 1));
     }
+    
+    private static void Timer(int timer_value,int value)
+    {         
+         timer1 = new Timer(timer_value,new ActionListener() 
+            {
+                public int timer_int = value;
+                
+                @Override
+                public void actionPerformed(ActionEvent e) 
+                {
+                    timer_int--;
+                    btn4.setText(Integer.toString(timer_int));
+                        
+                    if(timer_int == 0)
+                    {
+                       timer1.stop();
+                       btn4.setText("End");
+                       btn4.setEnabled(true);
+                       timer1 = null;
+                       Timer_Is_Active = false;
+                       System.gc(); // Call garbage collector for un-assigned references //
+                    }
+                    else if(timer_int % 5 == 0 && timer_int != 0)
+                    {
+                       jta.append("Timer is running\n");
+                    }      
+                }
+            });
+         timer1.start();
+         btn4.setEnabled(false);
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent Event) 
@@ -226,7 +260,11 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        
        else if(Event.getSource() == btn4)
        {
-           jta.append(btn4.getText()+ "\n");
+           if(Timer_Is_Active == false)
+           {
+               Timer(1000, RNG(10,100));
+               Timer_Is_Active = true;
+           }        
        }
        
        else if(Event.getSource() == jm_github) // Github Menüsü seçildiğinde //
