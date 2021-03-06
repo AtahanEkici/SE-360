@@ -1,6 +1,7 @@
 package Main;
 
-import DataBase.Database_Connections;import UI.UI;
+import DataBase.Database_Connections;
+import UI.UI;
 
 public class Main 
 {   

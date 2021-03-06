@@ -1,4 +1,5 @@
 package UI;
+
 import DataBase.Database_Connections; // import Database Connections class //
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -12,7 +13,9 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Locale;
+import java.util.Random;
+import java.util.TimerTask;
+import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,13 +28,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
+import javax.swing.Timer;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public final class UI extends JFrame implements ActionListener, MouseListener
 {
     private static UI single_instance = null; // singleton pattern so that only one Frame will be rendered //
     private static final Color PALE_BLACK = new Color(33, 37, 41); // Frame Content Pane Color //
+    private static boolean Timer_Is_Active = false;
     
     public static UI getInstance()
     {
@@ -44,16 +48,19 @@ public final class UI extends JFrame implements ActionListener, MouseListener
 
     // ------------------- Swing Components ------------------- //
     
-    private JFrame main;
-    private JButton btn1,btn2,btn3;
-    private JTextArea jta;
-    private JMenuBar mb;
-    private JMenu fileMenu,aboutMenu;
-    private JMenuItem jm_open,jm_save,jm_about,jm_github; // Main Frame Menu Components //
-    private JScrollPane jsp;
-    private JComboBox tables;
+    private static JFrame main;
+    private static JButton btn1,btn2,btn3,btn4,btn5;
+    private static JTextArea jta;
+    private static JMenuBar mb;
+    private static JMenu fileMenu,aboutMenu;
+    private static JMenuItem jm_open,jm_save,jm_about,jm_github; // Main Frame Menu Components //
+    private static JScrollPane jsp;
+    private static JComboBox tables;
     
     // ------------------- Swing Components ------------------- //
+    
+    private static Timer timer1;
+    private static int timer_int;
     
     private UI()
     {
@@ -105,6 +112,16 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         btn3.setBackground(Color.WHITE);
         btn3.setFocusable(false);
         
+        btn4 = new JButton("Btn4");
+        btn4.addActionListener(this);
+        btn4.setBackground(Color.WHITE);
+        btn4.setFocusable(false);
+        
+        btn5 = new JButton("Btn5");
+        btn5.addActionListener(this);
+        btn5.setBackground(Color.WHITE);
+        btn5.setFocusable(false);
+        
         tables = new JComboBox(Database_Connections.getAllTableNames().toArray());
         tables.addActionListener(this);
         tables.setBackground(Color.WHITE);
@@ -143,6 +160,8 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         tutucu.add(btn1,BorderLayout.CENTER);
         tutucu.add(btn2,BorderLayout.CENTER);
         tutucu.add(btn3,BorderLayout.CENTER);
+        tutucu.add(btn4,BorderLayout.CENTER);
+        tutucu.add(btn5,BorderLayout.CENTER);
         tutucu.add(tables,BorderLayout.SOUTH);
         tutucu.setBorder(null);
         
@@ -174,14 +193,54 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         main.requestFocus();
     }
 
-    private void Update()
+    private void UpdateFrame()
     {
         // Refresh Main Frame //
         main.setVisible(false);
         main.revalidate();
         main.setVisible(true);
+        jta.append("Frame refreshed\n");
         // Refresh Main Frame //
     }
+    
+    private int RNG(int min, int max)
+    {
+        return ThreadLocalRandom.current().nextInt(min,(max + 1));
+    }
+    
+    private static void TimerForButton(int timer_value,int value,JButton button)
+    {      
+        String def = button.getText();
+        timer1 = new Timer(timer_value,new ActionListener()
+            {
+                public int timer_int = value;
+                
+                @Override
+                public void actionPerformed(ActionEvent e) 
+                {
+                    timer_int--;
+                    button.setText(Integer.toString(timer_int));
+                        
+                    if(timer_int == 0)
+                    {
+                       timer1.stop();
+                       button.setText(def);
+                       button.setEnabled(true);
+                       timer1 = null;
+                       Timer_Is_Active = false;
+                       System.gc(); // Call garbage collector for un-assigned references //
+                    }
+                    else if(timer_int % 5 == 0 && timer_int != 0)
+                    {
+                       jta.append("Timer is running\n");
+                    }      
+                }
+            });
+         timer1.start();
+         btn4.setEnabled(false);
+         Timer_Is_Active = true;
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent Event) 
@@ -202,10 +261,20 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        
        else if(Event.getSource() == btn3) // Buton3'e tıklandığında //
        {
-           jta.append("Btn3 pressed\n");
-           JOptionPane.showMessageDialog(null,"Btn3 pressed");
-           Update();
-           jta.append("Frame refreshed\n");
+           UpdateFrame();
+       }
+       
+       else if(Event.getSource() == btn4)
+       {
+           if(Timer_Is_Active == false)
+           {
+               TimerForButton(1000, RNG(10,100), btn4);
+           }        
+       }
+       
+        else if(Event.getSource() == btn5)
+       {
+            jta.setText(""); // Clear jtext area //
        }
        
        else if(Event.getSource() == jm_github) // Github Menüsü seçildiğinde //
