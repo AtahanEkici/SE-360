@@ -1,6 +1,8 @@
 package UI;
 
 import DataBase.Database_Connections; // import Database Connections class //
+import Support.SupportingFunctions;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
@@ -13,8 +15,6 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Random;
-import java.util.TimerTask;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -68,7 +68,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         {
             Construct_Main_Frame();
         } 
-        catch(IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) 
+        catch(Exception e) // Catch all exceptions //
         {
              JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);
         }
@@ -240,6 +240,8 @@ public final class UI extends JFrame implements ActionListener, MouseListener
          btn4.setEnabled(false);
          Timer_Is_Active = true;
     }
+    
+    
 
 
     @Override
@@ -306,6 +308,18 @@ public final class UI extends JFrame implements ActionListener, MouseListener
             }
        }
        
+       else if(Event.getSource() == jm_open)
+       {
+           try 
+           {
+               jta.append(SupportingFunctions.ReadFile() + "\n");
+           } 
+           catch (Exception e) 
+           {
+               JOptionPane.showMessageDialog( null, "File Reading Error", ""+e.getClass().getSimpleName()+"Error", JOptionPane. ERROR_MESSAGE);
+           }
+       }
+       
        else if(Event.getSource() == tables) // Combobox üzerinde seçim yapıldığında //
        {
            if(tables.getSelectedItem() != null)
@@ -316,7 +330,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        
        else
        {
-           jta.append("Unhandled Action\n");
+          jta.append("Unhandled Action\n");
           JOptionPane.showMessageDialog( null, "Unhandled Action", ""+Event.getSource().getClass().getSimpleName()+" Error", JOptionPane. ERROR_MESSAGE);
        }
     }
