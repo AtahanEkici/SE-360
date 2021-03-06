@@ -117,7 +117,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         btn4.setBackground(Color.WHITE);
         btn4.setFocusable(false);
         
-        btn5 = new JButton("Btn4");
+        btn5 = new JButton("Btn5");
         btn5.addActionListener(this);
         btn5.setBackground(Color.WHITE);
         btn5.setFocusable(false);
@@ -161,6 +161,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         tutucu.add(btn2,BorderLayout.CENTER);
         tutucu.add(btn3,BorderLayout.CENTER);
         tutucu.add(btn4,BorderLayout.CENTER);
+        tutucu.add(btn5,BorderLayout.CENTER);
         tutucu.add(tables,BorderLayout.SOUTH);
         tutucu.setBorder(null);
         
@@ -210,7 +211,6 @@ public final class UI extends JFrame implements ActionListener, MouseListener
     private static void TimerForButton(int timer_value,int value,JButton button)
     {      
          timer1 = new Timer(timer_value,new ActionListener()
-       
             {
                 public int timer_int = value;
                 
