@@ -49,7 +49,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
     // ------------------- Swing Components ------------------- //
     
     private static JFrame main;
-    private static JButton btn1,btn2,btn3,btn4;
+    private static JButton btn1,btn2,btn3,btn4,btn5;
     private static JTextArea jta;
     private static JMenuBar mb;
     private static JMenu fileMenu,aboutMenu;
@@ -116,6 +116,11 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         btn4.addActionListener(this);
         btn4.setBackground(Color.WHITE);
         btn4.setFocusable(false);
+        
+        btn5 = new JButton("Btn4");
+        btn5.addActionListener(this);
+        btn5.setBackground(Color.WHITE);
+        btn5.setFocusable(false);
         
         tables = new JComboBox(Database_Connections.getAllTableNames().toArray());
         tables.addActionListener(this);
@@ -202,9 +207,10 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         return ThreadLocalRandom.current().nextInt(min,(max + 1));
     }
     
-    private static void Timer(int timer_value,int value)
-    {         
-         timer1 = new Timer(timer_value,new ActionListener() 
+    private static void TimerForButton(int timer_value,int value,JButton button)
+    {      
+         timer1 = new Timer(timer_value,new ActionListener()
+       
             {
                 public int timer_int = value;
                 
@@ -212,13 +218,13 @@ public final class UI extends JFrame implements ActionListener, MouseListener
                 public void actionPerformed(ActionEvent e) 
                 {
                     timer_int--;
-                    btn4.setText(Integer.toString(timer_int));
+                    button.setText(Integer.toString(timer_int));
                         
                     if(timer_int == 0)
                     {
                        timer1.stop();
-                       btn4.setText("Btn4");
-                       btn4.setEnabled(true);
+                       button.setText("End");
+                       button.setEnabled(true);
                        timer1 = null;
                        Timer_Is_Active = false;
                        System.gc(); // Call garbage collector for un-assigned references //
@@ -231,6 +237,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
             });
          timer1.start();
          btn4.setEnabled(false);
+         Timer_Is_Active = true;
     }
 
 
@@ -260,9 +267,13 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        {
            if(Timer_Is_Active == false)
            {
-               Timer(1000, RNG(10,100));
-               Timer_Is_Active = true;
+               TimerForButton(1000, RNG(10,100), btn4);
            }        
+       }
+       
+        else if(Event.getSource() == btn5)
+       {
+            jta.setText(""); // Clear jtext area //
        }
        
        else if(Event.getSource() == jm_github) // Github Menüsü seçildiğinde //
