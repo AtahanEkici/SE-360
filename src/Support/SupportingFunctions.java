@@ -99,6 +99,7 @@ public class SupportingFunctions
                     if(timer_int == 0)
                     {
                        timer1.stop();
+                       jta.append(""+value+" seconds concluded\n");
                        button.setText(def);
                        button.setEnabled(true);
                        timer1 = null;
