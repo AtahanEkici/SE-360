@@ -34,7 +34,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 public final class UI extends JFrame implements ActionListener, MouseListener
 {
     private static UI single_instance = null; // singleton pattern so that only one Frame will be rendered //
-    private static final Color PALE_BLACK = new Color(33, 37, 41); // Frame Content Pane Color //
+    private static final Color DARK_GREY = new Color(51,51,51); // Frame Content Pane Color //
+    private static final Color LIGHT_GREY = new Color(204,204,204);
     private static boolean Timer_Is_Active = false;
     
     public static UI getInstance()
@@ -87,7 +88,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
 
         JPanel tutucu = new JPanel();
         tutucu.setLayout(new FlowLayout());
-        tutucu.setBackground(PALE_BLACK);
+        tutucu.setBackground(DARK_GREY);
 
         JPanel textArea = new JPanel();
         textArea.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -95,7 +96,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
 
         mb = new JMenuBar();
         main.setJMenuBar(mb);      
-        mb.setBorder(BorderFactory.createLineBorder(PALE_BLACK));
+        mb.setBorder(BorderFactory.createLineBorder(DARK_GREY));
         
         btn1 = new JButton("Btn1");
         btn1.addActionListener(this);
@@ -170,11 +171,11 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jsp.setBorder(null);
         
-        jsp.getVerticalScrollBar().setBackground(PALE_BLACK);
-        jsp.getHorizontalScrollBar().setBackground(PALE_BLACK);
+        jsp.getVerticalScrollBar().setBackground(DARK_GREY);
+        jsp.getHorizontalScrollBar().setBackground(DARK_GREY);
         
         jta = new JTextArea(35,55);
-        jta.setForeground(Color.WHITE);
+        jta.setForeground(LIGHT_GREY);
         jta.setBackground(Color.BLACK);
         jta.setEditable(false);
         
@@ -192,58 +193,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         main.setAutoRequestFocus(true);
         main.requestFocus();
     }
-
-    private void UpdateFrame()
-    {
-        // Refresh Main Frame //
-        main.setVisible(false);
-        main.revalidate();
-        main.setVisible(true);
-        jta.append("Frame refreshed\n");
-        // Refresh Main Frame //
-    }
     
-    private int RNG(int min, int max)
-    {
-        return ThreadLocalRandom.current().nextInt(min,(max + 1));
-    }
-    
-    private static void TimerForButton(int timer_value,int value,JButton button)
-    {      
-        String def = button.getText();
-        timer1 = new Timer(timer_value,new ActionListener()
-            {
-                public int timer_int = value;
-                
-                @Override
-                public void actionPerformed(ActionEvent e) 
-                {
-                    timer_int--;
-                    button.setText(Integer.toString(timer_int));
-                        
-                    if(timer_int == 0)
-                    {
-                       timer1.stop();
-                       button.setText(def);
-                       button.setEnabled(true);
-                       timer1 = null;
-                       Timer_Is_Active = false;
-                       System.gc(); // Call garbage collector for un-assigned references //
-                    }
-                    else if(timer_int % 5 == 0 && timer_int != 0)
-                    {
-                       jta.append("Timer is running\n");
-                    }      
-                }
-            });
-         timer1.start();
-         btn4.setEnabled(false);
-         Timer_Is_Active = true;
-    }
-    
-    
-
-
     @Override
     public void actionPerformed(ActionEvent Event) 
     {
@@ -263,14 +213,15 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        
        else if(Event.getSource() == btn3) // Buton3'e tıklandığında //
        {
-           UpdateFrame();
+           SupportingFunctions.UpdateFrame(main);
+           jta.append("Frame refreshed\n");
        }
        
        else if(Event.getSource() == btn4)
        {
            if(Timer_Is_Active == false)
            {
-               TimerForButton(1000, RNG(10,100), btn4);
+               SupportingFunctions.TimerForButton(1000, SupportingFunctions.RNG(10,100), btn4, jta);
            }        
        }
        
