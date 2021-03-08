@@ -215,7 +215,9 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         jta.setBackground(Color.BLACK);
         jta.setEditable(false);
         
-        jsp.getViewport().add(jta);            
+        jsp.getViewport().add(jta);
+        add(jsp);
+        add(jta);
         textArea.add(jsp);
         textArea.setBorder(null);
   

@@ -120,7 +120,7 @@ public class SupportingFunctions
     {
         button.setEnabled(false);
         
-        timer1 = new Timer(timer_value,new ActionListener()
+        progressTimer = new Timer(timer_value,new ActionListener()
             {
                 public int timer_int = 0;
                 
@@ -132,13 +132,13 @@ public class SupportingFunctions
                         
                     if(timer_int == 100)
                     {
-                       timer1.stop();
-                       timer1 = null;
+                       progressTimer.stop();
+                       progressTimer = null;
                        jta.append("ProgressBar finished\n");
                        button.setEnabled(true);
                     }   
                 }
             });
-         timer1.start();
+         progressTimer.start();
     }
 }
