@@ -11,13 +11,14 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 public class SupportingFunctions 
 {
     private static Timer timer1;
-    private static boolean Timer_Is_Active = false;
+    private static Timer progressTimer;
     
     private static double getFileSizeInMegaBytes(File file) 
     {
@@ -79,6 +80,7 @@ public class SupportingFunctions
         // Refresh Main Frame //
         main.setVisible(false);
         main.revalidate();
+        main.repaint();
         main.setVisible(true);
         // Refresh Main Frame //
     }
@@ -103,8 +105,6 @@ public class SupportingFunctions
                        button.setText(def);
                        button.setEnabled(true);
                        timer1 = null;
-                       Timer_Is_Active = false;
-                       System.gc(); // Call garbage collector for un-assigned references //
                     }
                     else if(timer_int % 5 == 0 && timer_int != 0)
                     {
@@ -114,7 +114,31 @@ public class SupportingFunctions
             });
          timer1.start();
          button.setEnabled(false);
-         Timer_Is_Active = true;
     }
-
+    
+    public static void ProgressBarController(JProgressBar jb, int timer_value, JButton button, JTextArea jta)
+    {
+        button.setEnabled(false);
+        
+        timer1 = new Timer(timer_value,new ActionListener()
+            {
+                public int timer_int = 0;
+                
+                @Override
+                public void actionPerformed(ActionEvent e) 
+                {
+                    timer_int++;
+                    jb.setValue(timer_int);
+                        
+                    if(timer_int == 100)
+                    {
+                       timer1.stop();
+                       timer1 = null;
+                       jta.append("ProgressBar finished\n");
+                       button.setEnabled(true);
+                    }   
+                }
+            });
+         timer1.start();
+    }
 }
