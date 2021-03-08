@@ -1,7 +1,7 @@
 package UI;
 
 import DataBase.Database_Connections; // import Database Connections class //
-import Support.SupportingFunctions;
+import Support.SupportingFunctions; // import Supporting Functions class //
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,12 +26,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public final class UI extends JFrame implements ActionListener, MouseListener
+public final class UI extends JFrame implements ActionListener, MouseListener, ChangeListener
 {
     private static UI single_instance = null; // singleton pattern so that only one Frame will be rendered //
     private static final Color DARK_GREY = new Color(51,51,51); // Frame Content Pane Color //
@@ -49,7 +53,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
     // ------------------- Swing Components ------------------- //
     
     private static JFrame main;
-    private static JButton btn1,btn2,btn3,btn4,btn5;
+    private static JButton btn1,btn2,btn3,btn4,btn5,btn6;
     private static JTextArea jta;
     private static JMenuBar mb;
     private static JMenu fileMenu,aboutMenu;
@@ -57,11 +61,10 @@ public final class UI extends JFrame implements ActionListener, MouseListener
     private static JScrollPane jsp;
     private static JComboBox tables;
     private static JCheckBox jcb;
+    private static JSlider slider1;
+    private static JProgressBar jb;
     
     // ------------------- Swing Components ------------------- //
-    
-    private static Timer timer1;
-    private static int timer_int;
     
     private UI()
     {
@@ -89,6 +92,10 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         JPanel tutucu = new JPanel();
         tutucu.setLayout(new FlowLayout());
         tutucu.setBackground(DARK_GREY);
+        
+        JPanel tutucu2 = new JPanel();
+        tutucu.setLayout(new FlowLayout());
+        tutucu.setBackground(Color.DARK_GRAY);
 
         JPanel textArea = new JPanel();
         textArea.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -128,6 +135,11 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         btn5.setBackground(Color.WHITE);
         btn5.setFocusable(false);
         
+        btn6 = new JButton("Btn6");
+        btn6.addActionListener(this);
+        btn6.setBackground(Color.WHITE);
+        btn6.setFocusable(false);
+        
         tables = new JComboBox(Database_Connections.getAllTableNames().toArray());
         tables.addActionListener(this);
         tables.setBackground(Color.WHITE);
@@ -163,20 +175,38 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         mb.add(fileMenu);
         mb.add(aboutMenu);
         
-         tutucu.add(jcb,BorderLayout.CENTER);
+        tutucu.add(jcb,BorderLayout.CENTER);
         tutucu.add(btn1,BorderLayout.CENTER);
         tutucu.add(btn2,BorderLayout.CENTER);
         tutucu.add(btn3,BorderLayout.CENTER);
         tutucu.add(btn4,BorderLayout.CENTER);
         tutucu.add(btn5,BorderLayout.CENTER);
+        tutucu.add(btn6,BorderLayout.CENTER);
         tutucu.add(tables,BorderLayout.SOUTH);
         tutucu.setBorder(null);
         
+        slider1 = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+        slider1.setBackground(Color.WHITE);
+        slider1.setFocusable(false);
+        slider1.setMinorTickSpacing(5);  
+        slider1.setMajorTickSpacing(20);  
+        slider1.setPaintTicks(true);  
+        slider1.setPaintLabels(true); 
+        slider1.addChangeListener(this);
+        
+        jb = new JProgressBar(0,100);
+        jb.setValue(0);    
+        jb.setStringPainted(true); 
+        jb.addChangeListener(this);
+        
+        tutucu2.add(slider1);
+        tutucu2.add(jb);
+        tutucu2.setBorder(null);
+        
         jsp = new JScrollPane();
         jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         jsp.setBorder(null);
-        
         jsp.getVerticalScrollBar().setBackground(DARK_GREY);
         jsp.getHorizontalScrollBar().setBackground(DARK_GREY);
         
@@ -185,14 +215,13 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         jta.setBackground(Color.BLACK);
         jta.setEditable(false);
         
-        jsp.getViewport().add(jta);
-        add(jsp);
-                     
+        jsp.getViewport().add(jta);            
         textArea.add(jsp);
         textArea.setBorder(null);
   
-        main.add(textArea,BorderLayout.PAGE_END); // Text'leri tutan panelin JFrame'e iliştirilmesi //
         main.add(tutucu,BorderLayout.NORTH); // Butonları tutan panelin Ana Frame'e eklenmesi //
+        main.add(tutucu2,BorderLayout.CENTER);
+         main.add(textArea,BorderLayout.PAGE_END); // Text'leri tutan panelin JFrame'e iliştirilmesi //
         main.pack(); // Function that packs the frame and cuts the unnecessary lines //
         main.setLocationRelativeTo(null); // initially start the frame at the center of the screen //
         main.setVisible(true);        
@@ -244,7 +273,12 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        {
             jta.setText(""); // Clear jtext area //
        }
-       
+        
+        else if(Event.getSource() == btn6)
+       {
+            SupportingFunctions.ProgressBarController(jb,250,btn6,jta);
+       }
+
        else if(Event.getSource() == jm_github) // Github Menüsü seçildiğinde //
        {
            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) // if the github button is pressed on the main frame //
@@ -331,6 +365,20 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         else if(Event.getSource() == aboutMenu)
         {
             aboutMenu.setSelected(false); // dispose hover effect //
+        }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent Event) 
+    {
+        if(Event.getSource() == slider1) // Slider //
+        {
+            jta.append("Slider Value: " +Integer.toString(slider1.getValue())+ "\n");
+        }
+        
+        else if(Event.getSource() == jb) // Progress Bar //
+        {
+            jta.append("Progress bar state changed: "+jb.getValue()+"\n");
         }
     }
 }
