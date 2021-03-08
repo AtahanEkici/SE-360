@@ -15,10 +15,10 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -36,7 +36,6 @@ public final class UI extends JFrame implements ActionListener, MouseListener
     private static UI single_instance = null; // singleton pattern so that only one Frame will be rendered //
     private static final Color DARK_GREY = new Color(51,51,51); // Frame Content Pane Color //
     private static final Color LIGHT_GREY = new Color(204,204,204);
-    private static boolean Timer_Is_Active = false;
     
     public static UI getInstance()
     {
@@ -57,6 +56,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
     private static JMenuItem jm_open,jm_save,jm_about,jm_github; // Main Frame Menu Components //
     private static JScrollPane jsp;
     private static JComboBox tables;
+    private static JCheckBox jcb;
     
     // ------------------- Swing Components ------------------- //
     
@@ -97,6 +97,11 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         mb = new JMenuBar();
         main.setJMenuBar(mb);      
         mb.setBorder(BorderFactory.createLineBorder(DARK_GREY));
+        
+        jcb = new JCheckBox();
+        jcb.addActionListener(this);
+        jcb.setBackground(Color.WHITE);
+        jcb.setFocusable(false);
         
         btn1 = new JButton("Btn1");
         btn1.addActionListener(this);
@@ -158,6 +163,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
         mb.add(fileMenu);
         mb.add(aboutMenu);
         
+         tutucu.add(jcb,BorderLayout.CENTER);
         tutucu.add(btn1,BorderLayout.CENTER);
         tutucu.add(btn2,BorderLayout.CENTER);
         tutucu.add(btn3,BorderLayout.CENTER);
@@ -197,11 +203,23 @@ public final class UI extends JFrame implements ActionListener, MouseListener
     @Override
     public void actionPerformed(ActionEvent Event) 
     {
-       if(Event.getSource() == btn1) // Buton1'e tıklandığında //
+       if(Event.getSource() == jcb)
+       {
+           if(jcb.isSelected() == true)
+           {
+               jta.append("JCheckBox checked\n");
+           }
+            
+           else
+           {
+               jta.append("JCheckBox UNchecked\n");
+           }   
+       }
+       
+       else if(Event.getSource() == btn1) // Buton1'e tıklandığında //
        {
            jta.append("Btn1 pressed\n");
             //JOptionPane.showMessageDialog(null,"Btn1 pressed");  
-            //Update();
        }
        
        else if(Event.getSource() == btn2) // Buton2'ye tıklandığında //
@@ -219,10 +237,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener
        
        else if(Event.getSource() == btn4)
        {
-           if(Timer_Is_Active == false)
-           {
-               SupportingFunctions.TimerForButton(1000, SupportingFunctions.RNG(10,100), btn4, jta);
-           }        
+               SupportingFunctions.TimerForButton(1000, SupportingFunctions.RNG(10,100), btn4, jta);      
        }
        
         else if(Event.getSource() == btn5)
