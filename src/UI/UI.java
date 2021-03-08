@@ -205,7 +205,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         
         jsp = new JScrollPane();
         jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jsp.setBorder(null);
         jsp.getVerticalScrollBar().setBackground(DARK_GREY);
         jsp.getHorizontalScrollBar().setBackground(DARK_GREY);
