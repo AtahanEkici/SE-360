@@ -219,7 +219,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
   
         main.add(tutucu,BorderLayout.NORTH); // Butonları tutan panelin Ana Frame'e eklenmesi //
         main.add(tutucu2,BorderLayout.CENTER);
-         main.add(textArea,BorderLayout.PAGE_END); // Text'leri tutan panelin JFrame'e iliştirilmesi //
+        main.add(textArea,BorderLayout.PAGE_END); // Text'leri tutan panelin JFrame'e iliştirilmesi //
         main.pack(); // Function that packs the frame and cuts the unnecessary lines //
         main.setLocationRelativeTo(null); // initially start the frame at the center of the screen //
         main.setVisible(true);        
