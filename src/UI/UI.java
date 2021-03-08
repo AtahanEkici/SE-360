@@ -2,6 +2,7 @@ package UI;
 
 import DataBase.Database_Connections; // import Database Connections class //
 import Support.SupportingFunctions; // import Supporting Functions class //
+import com.formdev.flatlaf.FlatLightLaf;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -31,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -70,6 +72,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
     {
         try 
         {
+            UIManager.setLookAndFeel(new FlatLightLaf());
             Construct_Main_Frame();
         } 
         catch(Exception e) // Catch all exceptions //
@@ -94,8 +97,8 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         tutucu.setBackground(DARK_GREY);
         
         JPanel tutucu2 = new JPanel();
-        tutucu.setLayout(new FlowLayout());
-        tutucu.setBackground(Color.DARK_GRAY);
+        tutucu2.setLayout(new FlowLayout());
+        tutucu2.setBackground(Color.DARK_GRAY);
 
         JPanel textArea = new JPanel();
         textArea.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -186,7 +189,8 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         tutucu.setBorder(null);
         
         slider1 = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
-        slider1.setBackground(Color.WHITE);
+        slider1.setBackground(Color.BLACK);
+        slider1.setForeground(Color.WHITE);
         slider1.setFocusable(false);
         slider1.setMinorTickSpacing(5);  
         slider1.setMajorTickSpacing(20);  
@@ -195,6 +199,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         slider1.addChangeListener(this);
         
         jb = new JProgressBar(0,100);
+        jb.setBackground(Color.WHITE);
         jb.setValue(0);    
         jb.setStringPainted(true); 
         jb.addChangeListener(this);

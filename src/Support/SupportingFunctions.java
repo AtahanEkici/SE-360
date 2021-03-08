@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 public class SupportingFunctions 
@@ -40,7 +41,7 @@ public class SupportingFunctions
                if(size > 10)
                {
                     JOptionPane.showMessageDialog( null, "File is too large: "+(int)size+" MB","ERROR",JOptionPane.ERROR_MESSAGE);
-                    return "";
+                    return "File too large\n";
                }
                
                StringBuilder stringBuilder;
@@ -64,7 +65,7 @@ public class SupportingFunctions
                 }
                 else
                 {
-                 JOptionPane.showMessageDialog( null, ""+e+"", "ERROR!", JOptionPane. ERROR_MESSAGE);
+                 JOptionPane.showMessageDialog( null, ""+e.getLocalizedMessage()+"", "ERROR!", JOptionPane. ERROR_MESSAGE);
                 }
             }
         return content;
@@ -78,16 +79,13 @@ public class SupportingFunctions
     public static void UpdateFrame(JFrame main)
     {
         // Refresh Main Frame //
-        main.setVisible(false);
-        main.revalidate();
-        main.repaint();
-        main.setVisible(true);
+        //SwingUtilities.updateComponentTreeUI(main); // Unstable: have issues //
         // Refresh Main Frame //
     }
     
     public static void TimerForButton(int timer_value,int value,JButton button,JTextArea jta)
     {      
-        String def = button.getText();
+        //String def = button.getText();
         button.setEnabled(false);
         
         timer1 = new Timer(timer_value,new ActionListener()
@@ -104,13 +102,13 @@ public class SupportingFunctions
                     {
                        timer1.stop();
                        jta.append(""+value+" seconds concluded\n");
-                       button.setText(def);
+                       //button.setText(def);
                        button.setEnabled(true);
                        timer1 = null;
                     }
                     else if(timer_int % 5 == 0 && timer_int != 0)
                     {
-                       jta.append("Timer is running\n");
+                       jta.append("Timer is running "+timer_int+" left\n");
                     }      
                 }
             });
