@@ -207,21 +207,19 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jsp.setBorder(null);
-        jsp.getVerticalScrollBar().setBackground(DARK_GREY);
-        jsp.getHorizontalScrollBar().setBackground(DARK_GREY);
-        
+
         jta = new JTextArea(35,55);
         jta.setForeground(LIGHT_GREY);
         jta.setBackground(Color.BLACK);
         jta.setEditable(false);
         
-        jsp.getViewport().add(jta);            
+        jsp.getViewport().add(jta);
         textArea.add(jsp);
         textArea.setBorder(null);
   
         main.add(tutucu,BorderLayout.NORTH); // Butonları tutan panelin Ana Frame'e eklenmesi //
         main.add(tutucu2,BorderLayout.CENTER);
-         main.add(textArea,BorderLayout.PAGE_END); // Text'leri tutan panelin JFrame'e iliştirilmesi //
+        main.add(textArea,BorderLayout.PAGE_END); // Text'leri tutan panelin JFrame'e iliştirilmesi //
         main.pack(); // Function that packs the frame and cuts the unnecessary lines //
         main.setLocationRelativeTo(null); // initially start the frame at the center of the screen //
         main.setVisible(true);        
@@ -266,7 +264,8 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
        
        else if(Event.getSource() == btn4)
        {
-               SupportingFunctions.TimerForButton(1000, SupportingFunctions.RNG(10,100), btn4, jta);      
+            int rng = SupportingFunctions.RNG(10,100);
+            SupportingFunctions.TimerForButton(1000,rng,btn4,jta);      
        }
        
         else if(Event.getSource() == btn5)
