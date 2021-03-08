@@ -73,6 +73,8 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         try 
         {
             UIManager.setLookAndFeel(new FlatLightLaf());
+            UIManager.put("ScrollBar.track",(Color.WHITE));
+            UIManager.put( "ScrollBar.thumbArc", 999 );
             Construct_Main_Frame();
         } 
         catch(Exception e) // Catch all exceptions //
@@ -110,7 +112,6 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         
         jcb = new JCheckBox();
         jcb.addActionListener(this);
-        jcb.setBackground(Color.WHITE);
         jcb.setFocusable(false);
         
         btn1 = new JButton("Btn1");
@@ -211,6 +212,8 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         jsp = new JScrollPane();
         jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jsp.getViewport().setBackground(Color.BLACK);
+        jsp.getViewport().setForeground(Color.WHITE);
         jsp.setBorder(null);
 
         jta = new JTextArea(35,55);
