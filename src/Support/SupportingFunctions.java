@@ -88,6 +88,8 @@ public class SupportingFunctions
     public static void TimerForButton(int timer_value,int value,JButton button,JTextArea jta)
     {      
         String def = button.getText();
+        button.setEnabled(false);
+        
         timer1 = new Timer(timer_value,new ActionListener()
             {
                 public int timer_int = value;
@@ -96,7 +98,7 @@ public class SupportingFunctions
                 public void actionPerformed(ActionEvent e) 
                 {
                     timer_int--;
-                    button.setText(Integer.toString(timer_int));
+                    //button.setText(Integer.toString(timer_int)); // Causes horizontal scrollpane to fail //
                         
                     if(timer_int == 0)
                     {
@@ -113,7 +115,6 @@ public class SupportingFunctions
                 }
             });
          timer1.start();
-         button.setEnabled(false);
     }
     
     public static void ProgressBarController(JProgressBar jb, int timer_value, JButton button, JTextArea jta)
