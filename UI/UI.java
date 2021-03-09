@@ -2,20 +2,23 @@ package UI;
 
 import DataBase.Database_Connections; // import Database Connections class //
 import Support.SupportingFunctions; // import Supporting Functions class //
-import com.formdev.flatlaf.FlatLightLaf;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,8 +34,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
-import javax.swing.Timer;
-import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -72,9 +73,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
     {
         try 
         {
-            UIManager.setLookAndFeel(new FlatLightLaf());
-            UIManager.put("ScrollBar.track",(Color.WHITE));
-            UIManager.put( "ScrollBar.thumbArc", 999 );
+            SupportingFunctions.LookAndFeelSetup(); // Change the Look And Feel of the java swing GUI 
             Construct_Main_Frame();
         } 
         catch(Exception e) // Catch all exceptions //
@@ -88,10 +87,12 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());  
         
         main = new JFrame("SE360 Project - Main Frame");
-        ImageIcon image = new ImageIcon(getClass().getResource("/Icons/demo.png"));
-        main.setIconImage(image.getImage());
+        ImageIcon imageicon = new ImageIcon(getClass().getResource("/Icons/demo.png"));
+        Image image = imageicon.getImage();
+        image = SupportingFunctions.getScaledImage(image,90,60);
+        main.setIconImage(image);
         main.setLayout(new BorderLayout());
-        main.setResizable(false);
+        //main.setResizable(false);
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel tutucu = new JPanel();
@@ -225,9 +226,9 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         textArea.add(jsp);
         textArea.setBorder(null);
   
-        main.add(tutucu,BorderLayout.NORTH); // Butonları tutan panelin Ana Frame'e eklenmesi //
-        main.add(tutucu2,BorderLayout.CENTER);
-        main.add(textArea,BorderLayout.PAGE_END); // Text'leri tutan panelin JFrame'e iliştirilmesi //
+        main.add(tutucu,BorderLayout.PAGE_START); // Butonları tutan panelin Ana Frame'e eklenmesi //
+        main.add(tutucu2,BorderLayout.SOUTH);
+        main.add(textArea,BorderLayout.CENTER); // Text'leri tutan panelin JFrame'e iliştirilmesi //
         main.pack(); // Function that packs the frame and cuts the unnecessary lines //
         main.setLocationRelativeTo(null); // initially start the frame at the center of the screen //
         main.setVisible(true);        
