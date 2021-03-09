@@ -1,12 +1,21 @@
 package Support;
 
+import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -15,6 +24,8 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class SupportingFunctions 
 {
@@ -74,6 +85,23 @@ public class SupportingFunctions
     public static int RNG(int min, int max)
     {
         return ThreadLocalRandom.current().nextInt(min,(max + 1));
+    }
+    
+    public static Image getScaledImage(Image srcImg, int w, int h)
+    {
+    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = resizedImg.createGraphics();
+    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+    g2.drawImage(srcImg, 0, 0, w, h, null);
+    g2.dispose();
+    return resizedImg;
+}
+    
+    public static void LookAndFeelSetup() throws UnsupportedLookAndFeelException
+    {
+        UIManager.setLookAndFeel(new FlatLightLaf());
+        UIManager.put("ScrollBar.track",(Color.WHITE));
+        UIManager.put( "ScrollBar.thumbArc", 999 );
     }
     
     public static void UpdateFrame(JFrame main)
