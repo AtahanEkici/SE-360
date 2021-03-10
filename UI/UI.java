@@ -6,6 +6,7 @@ import Support.SupportingFunctions; // import Supporting Functions class //
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.HeadlessException;
 import java.awt.Image;
@@ -87,11 +88,8 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());  
         
         main = new JFrame("SE360 Project - Main Frame");
-        ImageIcon imageicon = new ImageIcon(getClass().getResource("/Icons/demo.png"));
-        Image image = imageicon.getImage();
-        image = SupportingFunctions.getScaledImage(image,90,60);
-        main.setIconImage(image);
         main.setLayout(new BorderLayout());
+        SupportingFunctions.setImageIcon(getClass().getResource("/Icons/demo.png"),main);
         //main.setResizable(false);
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
