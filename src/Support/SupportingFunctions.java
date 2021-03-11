@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -84,6 +85,11 @@ public class SupportingFunctions
         return content;
     }
     
+    public static String getJavaVersion() 
+    {
+        return Runtime.class.getPackage().getImplementationVersion();
+    }
+    
     public static int RNG(int min, int max)
     {
         return ThreadLocalRandom.current().nextInt(min,(max + 1));
@@ -99,7 +105,7 @@ public class SupportingFunctions
     public static void UpdateFrame(JFrame main)
     {
         // Refresh Main Frame //
-        //SwingUtilities.updateComponentTreeUI(main); // Unstable: have issues //
+        SwingUtilities.updateComponentTreeUI(main); // Unstable: have issues //
         // Refresh Main Frame //
     }
     

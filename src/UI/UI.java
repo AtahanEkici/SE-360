@@ -305,12 +305,13 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
             try
             {   
                 JOptionPane.showMessageDialog(null,"<html><font color=#0066ff> <u> Java Swing Application</u></font></html>\n\n"
-                        + "<html><font color=#0066ff><u> Java</u>: </font>  1.8.0_125 </html> \n"
+                        + "<html><font color=#0066ff><u> Java</u>: </font> "+SupportingFunctions.getJavaVersion()+" </html> \n"
                         + "<html><font color=#0066ff> <u> IDE</u>: </font>  Apache Netbeans IDE 12.0 </html>\n"
-                        + "<html><font color=#0066ff><u> Icons</u>: </font>  www.flaticon.com </html>\n","About This Project",JOptionPane.INFORMATION_MESSAGE);     
+                        + "<html><font color=#0066ff><u> Icons</u>: </font>  www.flaticon.com </html>\n"
+                        + "<html><font color=#0066ff><u> Look&Feel</u>: </font>  Flatlaf 1.0 </html>\n","About This Project",JOptionPane.INFORMATION_MESSAGE);     
             }catch(HeadlessException e)
             {
-                JOptionPane.showMessageDialog( null, ""+e+"", "ERROR!", JOptionPane. ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, ""+e.getLocalizedMessage()+"", "ERROR!", JOptionPane. ERROR_MESSAGE);
             }
        }
        
@@ -322,7 +323,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
            } 
            catch (Exception e) 
            {
-               JOptionPane.showMessageDialog( null, "File Reading Error", ""+e.getClass().getSimpleName()+"Error", JOptionPane. ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(null, "File Reading Error", ""+e.getClass().getSimpleName()+"Error", JOptionPane. ERROR_MESSAGE);
            }
        }
        
