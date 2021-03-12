@@ -6,22 +6,17 @@ import Support.SupportingFunctions; // import Supporting Functions class //
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.HeadlessException;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -34,18 +29,22 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-public final class UI extends JFrame implements ActionListener, MouseListener, ChangeListener
+public final class UI extends JFrame implements ActionListener, MouseListener, ChangeListener, ListSelectionListener
 {
     private static UI single_instance = null; // singleton pattern so that only one Frame will be rendered //
-    private static final Color DARK_GREY = new Color(51,51,51); // Frame Content Pane Color //
+    private static final Color DARK_GREY = new Color(51,51,51);
     private static final Color LIGHT_GREY = new Color(204,204,204);
     
-    public static UI getInstance()
+    public static UI getInstance() // Singleton Pattern //
     {
         if(single_instance == null)
         {
@@ -56,17 +55,19 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
 
     // ------------------- Swing Components ------------------- //
     
-    private static JFrame main;
-    private static JButton btn1,btn2,btn3,btn4,btn5,btn6;
+    private static JFrame main,table;
+    private static JButton btn1,btn2,btn3,btn4,btn5,btn6,btn7;
     private static JTextArea jta;
     private static JMenuBar mb;
     private static JMenu fileMenu,aboutMenu;
     private static JMenuItem jm_open,jm_save,jm_about,jm_github; // Main Frame Menu Components //
-    private static JScrollPane jsp;
+    private static JScrollPane jsp,jsp_Table;
     private static JComboBox tables;
     private static JCheckBox jcb;
     private static JSlider slider1;
     private static JProgressBar jb;
+    private static JTable jt;
+    private static ListSelectionModel select;
     
     // ------------------- Swing Components ------------------- //
     
@@ -76,11 +77,44 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         {
             SupportingFunctions.LookAndFeelSetup(); // Change the Look And Feel of the java swing GUI 
             Construct_Main_Frame();
+            JTable_Consturctor();
         } 
         catch(Exception e) // Catch all exceptions //
         {
              JOptionPane.showMessageDialog(null,""+e.getMessage()+"","ERROR ("+e.getClass().getSimpleName()+")",JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    private void JTable_Consturctor()
+    {
+        table = new JFrame("JTable Demo");
+        table.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        table.setBackground(DARK_GREY);
+        
+        String columns[]={"ID","NAME","SALARY"}; 
+        String data[][]={ {"101","Amit","670000"},{"102","Jai","780000"},{"103","Sachin","700000"}};    
+        
+        jt  = new JTable(data,columns);
+        jt.setCellSelectionEnabled(true);
+        jt.setBackground(DARK_GREY);
+        jt.setForeground(LIGHT_GREY);
+        
+        select = jt.getSelectionModel();  
+        select.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        select.addListSelectionListener(this);
+        
+        jsp_Table = new JScrollPane(jt);
+        jsp_Table.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        jsp_Table.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jsp_Table.getViewport().setBackground(Color.BLACK);
+        jsp_Table.getViewport().setForeground(Color.WHITE);
+        jsp_Table.setBorder(null);
+    
+        table.add(jsp_Table);  
+        table.setSize(table.getPreferredSize());  
+        table.setVisible(false);
+        table.setLocationRelativeTo(null);
+        
     }
     
     private void Construct_Main_Frame() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException     // Constructs the Main Frame //  
@@ -143,6 +177,11 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         btn6.setBackground(Color.WHITE);
         btn6.setFocusable(false);
         
+        btn7 = new JButton("Btn7");
+        btn7.addActionListener(this);
+        btn7.setBackground(Color.WHITE);
+        btn7.setFocusable(false);
+        
         tables = new JComboBox(Database_Connections.getAllTableNames().toArray());
         tables.addActionListener(this);
         tables.setBackground(Color.WHITE);
@@ -185,6 +224,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         tutucu.add(btn4,BorderLayout.CENTER);
         tutucu.add(btn5,BorderLayout.CENTER);
         tutucu.add(btn6,BorderLayout.CENTER);
+        tutucu.add(btn7,BorderLayout.CENTER);
         tutucu.add(tables,BorderLayout.SOUTH);
         tutucu.setBorder(null);
         
@@ -284,6 +324,19 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
        {
             SupportingFunctions.ProgressBarController(jb,250,btn6,jta);
        }
+        
+        else if(Event.getSource() == btn7)
+       {
+           if(table.isVisible() == true)
+           {
+               table.setVisible(false);
+           }
+           else
+           {
+               table.setVisible(true);
+           }
+           
+       }
 
        else if(Event.getSource() == jm_github) // Github Menüsü seçildiğinde //
        {
@@ -305,12 +358,13 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
             try
             {   
                 JOptionPane.showMessageDialog(null,"<html><font color=#0066ff> <u> Java Swing Application</u></font></html>\n\n"
-                        + "<html><font color=#0066ff><u> Java</u>: </font>  1.8.0_125 </html> \n"
+                        + "<html><font color=#0066ff><u> Java</u>: </font> "+SupportingFunctions.getJavaVersion()+" </html> \n"
                         + "<html><font color=#0066ff> <u> IDE</u>: </font>  Apache Netbeans IDE 12.0 </html>\n"
-                        + "<html><font color=#0066ff><u> Icons</u>: </font>  www.flaticon.com </html>\n","About This Project",JOptionPane.INFORMATION_MESSAGE);     
+                        + "<html><font color=#0066ff><u> Icons</u>: </font>  www.flaticon.com </html>\n"
+                        + "<html><font color=#0066ff><u> Look&Feel</u>: </font>  Flatlaf 1.0 </html>\n","About This Project",JOptionPane.INFORMATION_MESSAGE);     
             }catch(HeadlessException e)
             {
-                JOptionPane.showMessageDialog( null, ""+e+"", "ERROR!", JOptionPane. ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, ""+e.getLocalizedMessage()+"", "ERROR!", JOptionPane. ERROR_MESSAGE);
             }
        }
        
@@ -322,7 +376,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
            } 
            catch (Exception e) 
            {
-               JOptionPane.showMessageDialog( null, "File Reading Error", ""+e.getClass().getSimpleName()+"Error", JOptionPane. ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(null, "File Reading Error", ""+e.getClass().getSimpleName()+"Error", JOptionPane. ERROR_MESSAGE);
            }
        }
        
@@ -385,6 +439,25 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         else if(Event.getSource() == jb) // Progress Bar //
         {
             jta.append("Progress bar state changed: "+jb.getValue()+"\n");
+        }
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent Event) 
+    {
+        if(Event.getSource() == select)
+        {
+            String Data = null;  
+            int[] row = jt.getSelectedRows();  
+            int[] columns = jt.getSelectedColumns();  
+            for (int i = 0; i < row.length; i++) 
+            {  
+                for (int j = 0; j < columns.length; j++) 
+                {  
+                    Data = (String) jt.getValueAt(row[i], columns[j]);  
+                } 
+            }  
+                jta.append("Table element selected is: " + Data + "\n");    
         }
     }
 }
