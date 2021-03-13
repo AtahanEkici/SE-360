@@ -7,7 +7,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +37,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public final class UI extends JFrame implements ActionListener, MouseListener, ChangeListener, ListSelectionListener
+public final class UI extends JFrame implements ActionListener, MouseListener, ChangeListener
 {
     private static UI single_instance = null; // singleton pattern so that only one Frame will be rendered //
     private static final Color DARK_GREY = new Color(51,51,51);
@@ -77,7 +76,7 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         {
             SupportingFunctions.LookAndFeelSetup(); // Change the Look And Feel of the java swing GUI 
             Construct_Main_Frame();
-            JTable_Consturctor();
+            JTable_Constructor();
         } 
         catch(Exception e) // Catch all exceptions //
         {
@@ -85,23 +84,22 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         }
     }
     
-    private void JTable_Consturctor()
+    private void JTable_Constructor()
     {
         table = new JFrame("JTable Demo");
         table.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         table.setBackground(DARK_GREY);
         
         String columns[]={"ID","NAME","SALARY"}; 
-        String data[][]={ {"101","Amit","670000"},{"102","Jai","780000"},{"103","Sachin","700000"}};    
+        String data[][]={ {"ID1","Name1","Salary1"},{"ID2","Name2","Salary2"},{"ID3","Name3","Salary3"}};    
         
         jt  = new JTable(data,columns);
         jt.setCellSelectionEnabled(true);
         jt.setBackground(DARK_GREY);
         jt.setForeground(LIGHT_GREY);
+        jt.setDefaultEditor(Object.class, null);
+        jt.addMouseListener(this);
         
-        select = jt.getSelectionModel();  
-        select.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        select.addListSelectionListener(this);
         
         jsp_Table = new JScrollPane(jt);
         jsp_Table.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -111,9 +109,10 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         jsp_Table.setBorder(null);
     
         table.add(jsp_Table);  
-        table.setSize(table.getPreferredSize());  
-        table.setVisible(false);
+        table.setSize(table.getPreferredSize());
+        jt.setFillsViewportHeight(true);
         table.setLocationRelativeTo(null);
+        table.setVisible(false);
         
     }
     
@@ -399,8 +398,30 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
 // Not Needed //
 @Override public void mousePressed(MouseEvent Event){}
 @Override public void mouseReleased(MouseEvent Event){}
-@Override public void mouseClicked(MouseEvent Event){}
 // Not Needed //
+
+private static String last_Selected_Table_Index = "";
+
+@Override public void mouseClicked(MouseEvent Event)
+{
+    if(Event.getSource() == jt || Event.getSource() == select)
+        {
+            int row = jt.getSelectedRow();
+            int column = jt.getSelectedColumn();
+            String value = jt.getModel().getValueAt(row, column).toString();
+            
+            if(!last_Selected_Table_Index.matches(value))
+            {
+                jta.append(value + "\n");
+                last_Selected_Table_Index = value;
+            }
+            else
+            {
+                last_Selected_Table_Index = value;
+            } 
+        }
+}
+
 
     @Override
     public void mouseEntered(MouseEvent Event) 
@@ -439,25 +460,6 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
         else if(Event.getSource() == jb) // Progress Bar //
         {
             jta.append("Progress bar state changed: "+jb.getValue()+"\n");
-        }
-    }
-
-    @Override
-    public void valueChanged(ListSelectionEvent Event) 
-    {
-        if(Event.getSource() == select)
-        {
-            String Data = null;  
-            int[] row = jt.getSelectedRows();  
-            int[] columns = jt.getSelectedColumns();  
-            for (int i = 0; i < row.length; i++) 
-            {  
-                for (int j = 0; j < columns.length; j++) 
-                {  
-                    Data = (String) jt.getValueAt(row[i], columns[j]);  
-                } 
-            }  
-                jta.append("Table element selected is: " + Data + "\n");    
         }
     }
 }
