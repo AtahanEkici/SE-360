@@ -400,11 +400,11 @@ public final class UI extends JFrame implements ActionListener, MouseListener, C
 @Override public void mouseReleased(MouseEvent Event){}
 // Not Needed //
 
-private static String last_Selected_Table_Index = "";
-
 @Override public void mouseClicked(MouseEvent Event)
 {
-    if(Event.getSource() == jt || Event.getSource() == select)
+   String last_Selected_Table_Index = "";
+    
+    if(Event.getSource() == jt)
         {
             int row = jt.getSelectedRow();
             int column = jt.getSelectedColumn();
@@ -419,7 +419,6 @@ private static String last_Selected_Table_Index = "";
             {
                 last_Selected_Table_Index = value;
             } 
-            last_Selected_Table_Index = "";
         }
 }
 
